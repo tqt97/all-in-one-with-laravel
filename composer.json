@@ -17,6 +17,7 @@
         "pragmarx/recovery": "^0.2.1"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.8",
         "barryvdh/laravel-debugbar": "^3.16",
         "barryvdh/laravel-ide-helper": "^3.6",
         "fakerphp/faker": "^1.23",
@@ -26,6 +27,7 @@
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
+        "overtrue/phplint": "^9.6",
         "phpunit/phpunit": "^11.5.3"
     },
     "autoload": {
@@ -76,6 +78,9 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "phplint": [
+            "vendor/bin/phplint"
         ]
     },
     "extra": {
@@ -88,6 +93,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }

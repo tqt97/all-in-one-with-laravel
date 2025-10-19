@@ -24,8 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/two-factor/disable', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
 
     Route::middleware('throttle:5,1')->group(function () {
-        Route::get('/verify-two-factor', [TwoFactorVerifyController::class, 'show'])->name('two-factor.verify.form');
-        Route::post('/verify-two-factor', [TwoFactorVerifyController::class, 'verify'])->name('two-factor.verify');
+        Route::get('/verify-two-factor/otp', [TwoFactorVerifyController::class, 'showOtpForm'])->name('two-factor.verify.form.otp');
+        Route::get('/verify-two-factor/recovery', [TwoFactorVerifyController::class, 'showRecoveryForm'])->name('two-factor.verify.form.recovery');
+        Route::post('/verify-two-factor/otp', [TwoFactorVerifyController::class, 'verifyOtp'])->name('two-factor.verify.otp');
+        Route::post('/verify-two-factor/recovery', [TwoFactorVerifyController::class, 'verifyRecovery'])->name('two-factor.verify.recovery');
     });
 });
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Auth\TwoFactor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TwoFactorRequest extends FormRequest
+class RecoveryCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,7 @@ class TwoFactorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'otp' => ['required', 'string', 'min:6'],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'otp.required' => 'Vui lòng nhập mã xác thực.',
-            'otp.string' => 'Mã xác thực phải là một chuỗi.',
-            'otp.min' => 'Mã xác thực phải có ít nhất 6 ký tự.',
+            'code' => ['required', 'string', 'min:6'],
         ];
     }
 }

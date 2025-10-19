@@ -36,9 +36,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::user()->forceFill([
-            'two_factor_confirmed_at' => null,
-        ])->save();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

@@ -9,6 +9,7 @@ return [
     'disable_2fa_btn' => 'Disable 2FA',
     '2fa_placeholder' => 'Enter verification code ...',
     '2fa_label' => 'Enter the 6-digit code from your app',
+    'label_recovery' => 'Enter your recovery code',
     'verify_2fa' => 'Verify 2FA',
     'scan_text' => 'Scan this QR code using your authenticator app',
     'manual_text' => 'Or enter this code manually',
@@ -20,4 +21,7 @@ return [
     'enable_success' => 'Two-factor authentication enabled. Please login again.',
     'enable_fail' => 'Invalid verification code.',
     'disable_success' => 'Two-factor authentication disabled.',
+    'verify_recovery_code_invalid' => 'Invalid recovery code.',
+    'verify_recovery_invalid' => 'Invalid verification code.',
+    'verify_recovery_title' => 'Verify using a recovery code',
 ];

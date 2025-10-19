@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Run Laravel Pint to fix code style issues
+echo "Fixing code style with Laravel Pint..."
+
+# Get the list of changed PHP files
+files=$(git diff --cached --name-only --diff-filter=ACM -- '*.php');
+vendor/bin/pint $files -q
+
+# Stage the fixed files
+git add $files

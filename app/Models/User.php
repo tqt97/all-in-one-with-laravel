@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -65,5 +66,24 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new \App\Notifications\Auth\ResetPasswordQueued($token));
+    }
+
+    /**
+     * Interact with the two_factor_secret attribute.
+     */
+    protected function twoFactorSecret(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? decrypt($value) : null,
+            set: fn ($value) => $value ? encrypt($value) : null,
+        );
+    }
+
+    /**
+     * Checks if the user has 2FA enabled.
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return (bool) $this->two_factor_secret;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +17,20 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+
+        // If user has 2FA enabled
+        if ($user->hasTwoFactorEnabled()) {
+            return view('profile.edit', [
+                'user' => $user,
+            ]);
+        }
+
+        // If user doesn't have 2FA
+        return view('profile.edit', array_merge(
+            ['user' => $user],
+            $this->generateTwoFactorData($user)
+        ));
     }
 
     /**
@@ -56,5 +68,23 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Generate an array of data needed for the 2FA form.
+     */
+    protected function generateTwoFactorData(User $user): array
+    {
+        $google2fa = app('pragmarx.google2fa');
+        $recoveryCodes = app('pragmarx.recovery')->toArray();
+        $secret = $google2fa->generateSecretKey();
+        $QR_Image = $google2fa->getQRCodeInline(config('app.name'), $user->email, $secret);
+
+        session([
+            '2fa_secret' => $secret,
+            '2fa_recovery_codes' => $recoveryCodes,
+        ]);
+
+        return compact('QR_Image', 'secret', 'recoveryCodes');
     }
 }

@@ -10,7 +10,7 @@
         <div class="mt-4">
             <x-input-label for="otp" :value="__('2fa.2fa_label')" />
 
-            <x-text-input id="otp" class="block mt-1 w-full" type="text" name="otp" required autofocus
+            <x-text-input id="otp" class="block mt-1 w-full" type="number" name="otp" required autofocus
                 placeholder="{{ __('2fa.verify_placeholder') }}" />
 
             <x-input-error :messages="$errors->get('otp')" class="mt-2" />

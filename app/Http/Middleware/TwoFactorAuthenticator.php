@@ -21,6 +21,6 @@ class TwoFactorAuthenticator
             return $next($request);
         }
 
-        return redirect()->route('two-factor.verify.form');
+        return redirect()->route('two-factor.verify.form.otp');
     }
 }

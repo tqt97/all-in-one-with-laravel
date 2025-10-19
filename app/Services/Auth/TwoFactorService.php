@@ -22,6 +22,7 @@ class TwoFactorService
         $user->forceFill([
             'two_factor_secret' => $secret,
             'two_factor_recovery_codes' => json_encode($this->getHashedRecoveryCodes($recoveryCodes)),
+            'two_factor_confirmed_at' => now(),
         ])->save();
 
         return true;
@@ -50,15 +51,7 @@ class TwoFactorService
      */
     public function verifyLoginOtp(User $user, string $otp): bool
     {
-        // If the user has already confirmed 2FA, just return true
-        if ($this->verifyOtp($otp, $user->two_factor_secret)) {
-            $user->forceFill(['two_factor_confirmed_at' => now()])->save();
-
-            return true;
-        }
-
-        // If the user has not confirmed 2FA, check their recovery codes
-        return $this->verifyRecoveryCodes($user, $otp);
+        return $this->verifyOtp($otp, $user->two_factor_secret);
     }
 
     /**
@@ -72,7 +65,7 @@ class TwoFactorService
     /**
      * Verify and consume a recovery code
      */
-    private function verifyRecoveryCodes(User $user, string $otp): bool
+    public function verifyRecoveryCodes(User $user, string $otp): bool
     {
         $recoveryCodes = json_decode($user->two_factor_recovery_codes, true) ?? [];
 
@@ -81,7 +74,6 @@ class TwoFactorService
                 unset($recoveryCodes[$i]);
                 $user->forceFill([
                     'two_factor_recovery_codes' => json_encode(array_values($recoveryCodes)),
-                    'two_factor_confirmed_at' => now(),
                 ])->save();
 
                 return true;

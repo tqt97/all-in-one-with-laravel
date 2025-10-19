@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\TwoFactorRequest;
+use App\Http\Requests\Auth\TwoFactor\OtpRequest;
 use App\Services\Auth\TwoFactorService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class TwoFactorController extends Controller
     /**
      * Enable 2FA for the current user.
      */
-    public function enable(TwoFactorRequest $request): RedirectResponse
+    public function enable(OtpRequest $request): RedirectResponse
     {
         $user = Auth::user();
         $otp = $request->validated('otp');
@@ -39,7 +39,7 @@ class TwoFactorController extends Controller
     /**
      * Disable 2FA for the current user.
      */
-    public function disable(TwoFactorRequest $request): RedirectResponse
+    public function disable(OtpRequest $request): RedirectResponse
     {
         if ($this->twoFactorService->disable(Auth::user(), $request->validated('otp'))) {
             session([config('google2fa.session_var') => false]);

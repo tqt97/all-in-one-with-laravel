@@ -33,11 +33,11 @@ class SocialiteController extends Controller
     {
         $provider = $request->validated('provider');
         $socialUser = Socialite::driver($provider)->user();
-        if (blank($socialUser)) {
+        if (empty($socialUser)) {
             return to_route('login')->withErrors(['provider' => 'User not found.']);
         }
 
-        $user = \App\Models\User::query()->updateOrCreate([
+        $user = User::updateOrCreate([
             'email' => $socialUser->email,
         ], [
             'provider_name' => $provider,

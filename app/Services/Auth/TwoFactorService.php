@@ -15,7 +15,7 @@ class TwoFactorService
      */
     public function enable(User $user, string $otp, ?string $secret, array $recoveryCodes): bool
     {
-        if (blank($secret) || ! $this->verifyOtp($otp, $secret)) {
+        if (empty($secret) || ! $this->verifyOtp($otp, $secret)) {
             return false;
         }
 

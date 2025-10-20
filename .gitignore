@@ -26,3 +26,4 @@ _ide_helper.php
 .phpstorm.meta.php
 .phplint.cache
 vendor-bin/phplint
+phpstan-baseline.neon

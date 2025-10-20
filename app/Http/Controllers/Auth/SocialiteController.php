@@ -31,19 +31,20 @@ class SocialiteController extends Controller
      */
     public function callback(SocialiteProviderRequest $request): RedirectResponse
     {
-        $socialUser = Socialite::driver('github')->user();
+        $provider = $request->validated('provider');
+        $socialUser = Socialite::driver($provider)->user();
         if (empty($socialUser)) {
             return redirect()->route('login')->withErrors(['provider' => 'User not found.']);
         }
 
         $user = User::updateOrCreate([
-            'provider_id' => $socialUser->id,
-            'provider_name' => $request->validated('provider'),
-        ], [
-            'name' => $socialUser->name,
             'email' => $socialUser->email,
+        ], [
+            'provider_name' => $provider,
+            'provider_id' => $socialUser->id,
+            'name' => $socialUser->name ?? $socialUser->nickname,
             'provider_token' => $socialUser->token,
-            'provider_refresh_token' => $socialUser->refreshToken,
+            'provider_refresh_token' => $socialUser->refreshToken ?? null,
         ]);
 
         Auth::login($user);

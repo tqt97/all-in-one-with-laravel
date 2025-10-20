@@ -22,7 +22,7 @@ class SocialiteController extends Controller
         try {
             return Socialite::driver($request->validated('provider'))->redirect();
         } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors(['provider' => $e->getMessage()]);
+            return to_route('login')->withErrors(['provider' => $e->getMessage()]);
         }
     }
 
@@ -34,7 +34,7 @@ class SocialiteController extends Controller
         $provider = $request->validated('provider');
         $socialUser = Socialite::driver($provider)->user();
         if (empty($socialUser)) {
-            return redirect()->route('login')->withErrors(['provider' => 'User not found.']);
+            return to_route('login')->withErrors(['provider' => 'User not found.']);
         }
 
         $user = User::updateOrCreate([

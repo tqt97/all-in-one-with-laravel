@@ -15,7 +15,7 @@ class TwoFactorService
      */
     public function enable(User $user, string $otp, ?string $secret, array $recoveryCodes): bool
     {
-        if (empty($secret) || ! $this->verifyOtp($otp, $secret)) {
+        if (blank($secret) || ! $this->verifyOtp($otp, $secret)) {
             return false;
         }
 
@@ -59,7 +59,7 @@ class TwoFactorService
      */
     private function verifyOtp(string $otp, ?string $secret): bool
     {
-        return ! empty($secret) && $this->google2fa->verifyKey($secret, $otp);
+        return filled($secret) && $this->google2fa->verifyKey($secret, $otp);
     }
 
     /**

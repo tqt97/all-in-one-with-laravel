@@ -30,7 +30,7 @@ class TwoFactorController extends Controller
             session()->forget([self::SESSION_2FA_SECRET, self::SESSION_2FA_CODES]);
             Auth::logout();
 
-            return redirect()->route('login')->with('status', __('2fa.enable_success'));
+            return to_route('login')->with('status', __('2fa.enable_success'));
         }
 
         return back()->withErrors(['otp' => __('2fa.enable_fail')]);

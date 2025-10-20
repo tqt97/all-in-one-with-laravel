@@ -37,13 +37,13 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
     # Clear caches (important for fresh dev environment)
-    - name: Clear Laravel Cache
-      run: |
-        php artisan optimize:clear
-        php artisan config:clear
-        php artisan cache:clear
-        php artisan route:clear
-        php artisan view:clear
+    #- name: Clear Laravel Cache
+      #run: |
+        #php artisan optimize:clear
+        #php artisan config:clear
+        #php artisan cache:clear
+        #php artisan route:clear
+        #php artisan view:clear
 
     # Generate key
     - name: Generate key

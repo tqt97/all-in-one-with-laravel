@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\TwoFactorVerifyController;
 use App\Http\Controllers\ProfileController;
@@ -30,5 +31,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/verify-two-factor/recovery', [TwoFactorVerifyController::class, 'verifyRecovery'])->name('two-factor.verify.recovery');
     });
 });
+
+// Socialite Routes
+Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('auth.provider.redirect');
+Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('auth.provider.callback');
 
 require __DIR__.'/auth.php';

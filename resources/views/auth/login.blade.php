@@ -39,12 +39,24 @@
     <div
         class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
         Or</div>
+    @if (Route::has('magic.form'))
+        <div class="text-center">
+
+            <a class="text-center underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                href="{{ route('magic.form') }}">
+                {{ __('Login using magic link?') }}
+            </a>
+        </div>
+    @endif
+    <div
+        class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
+        Or</div>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
                 autofocus autocomplete="username" />
@@ -70,6 +82,7 @@
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
         </div>
+
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

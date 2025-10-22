@@ -54,7 +54,8 @@ class MagicLinkController extends Controller
     public function verify(MagicLinkRequest $request): RedirectResponse
     {
         if (! $request->hasValidSignature()) {
-            abort(401, 'Link expired or invalid');
+            return redirect()->route('magic.form')
+                ->withErrors(['magic_link' => 'This magic link has expired. Please request a new one.']);
         }
 
         $user = User::whereEmail($request->validated()['email'])->firstOrFail();

@@ -48,7 +48,7 @@ class MagicLinkNotification extends Notification implements ShouldQueue
         return [
             'type' => 'magic_link',
             'email' => $notifiable->email,
-            'url' => $this->url,
+            // 'url' => $this->url,
             'sent_at' => now(),
         ];
     }

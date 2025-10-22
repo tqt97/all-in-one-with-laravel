@@ -38,7 +38,7 @@ Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect']
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('auth.provider.callback');
 
 // Magic link signin
-Route::middleware(['guest', 'throttle:5,1'])->group(function () {
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
     Route::get('/magic', [MagicLinkController::class, 'showForm'])->name('magic.form');
     Route::post('/magic', [MagicLinkController::class, 'sendLink'])->name('magic.send');
     Route::get('/magic/verify', [MagicLinkController::class, 'verify'])->name('magic.verify');

@@ -21,27 +21,8 @@ class MagicLinkRequest extends FormRequest
      */
     public function rules(): array
     {
-        return match (true) {
-            $this->routeIs('magic.send') => $this->sendRules(),
-            $this->routeIs('magic.verify') => $this->verifyRules(),
-            default => [],
-        };
-    }
-
-    protected function sendRules(): array
-    {
         return [
             'email' => ['required', 'string', 'email'],
-        ];
-    }
-
-    protected function verifyRules(): array
-    {
-        return [
-            'email' => ['required', 'string', 'email'],
-            'hash' => ['required', 'string'],
-            'expires' => ['required', 'integer'],
-            'signature' => ['required', 'string'],
         ];
     }
 }

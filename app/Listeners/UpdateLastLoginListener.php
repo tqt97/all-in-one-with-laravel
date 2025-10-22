@@ -20,9 +20,9 @@ class UpdateLastLoginListener
      */
     public function handle(Login $event): void
     {
-        $event->user->forceFill([
+        $event->user->update([
             'last_login_ip' => $this->request->ip(),
             'last_login_at' => now(),
-        ])->saveQuietly();
+        ]);
     }
 }

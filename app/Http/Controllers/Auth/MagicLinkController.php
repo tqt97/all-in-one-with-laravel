@@ -13,6 +13,8 @@ use Illuminate\View\View;
 
 class MagicLinkController extends Controller
 {
+    const EXPIRATION_MINUTES = 10;
+
     /**
      * Show the magic link signin form.
      */
@@ -28,17 +30,16 @@ class MagicLinkController extends Controller
     {
         $email = $request->validated()['email'];
 
-        $user = User::firstOrCreate(
-            ['email' => $email],
-            ['name' => explode('@', $email)[0]]
-        );
+        $user = User::where('email', $email)->first();
+        if (! $user) {
+            return back()->withErrors(['email' => 'No account found with this email address.']);
+        }
 
         $url = URL::temporarySignedRoute(
             'magic.verify',
-            now()->addMinutes(30),
+            now()->addMinutes(self::EXPIRATION_MINUTES),
             [
                 'email' => $user->email,
-                'hash' => sha1($user->email),
             ]
         );
 
@@ -57,10 +58,6 @@ class MagicLinkController extends Controller
         }
 
         $user = User::whereEmail($request->validated()['email'])->firstOrFail();
-
-        if (! hash_equals(sha1($user->email), $request->validated()['hash'])) {
-            abort(403, 'Invalid signature hash');
-        }
 
         Auth::login($user);
 

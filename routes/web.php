@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\TwoFactorVerifyController;
@@ -35,5 +36,12 @@ Route::middleware('auth')->group(function () {
 // Socialite Routes
 Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('auth.provider.redirect');
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('auth.provider.callback');
+
+// Magic link signin
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    Route::get('/magic', [MagicLinkController::class, 'showForm'])->name('magic.form');
+    Route::post('/magic', [MagicLinkController::class, 'sendLink'])->name('magic.send');
+    Route::get('/magic/verify', [MagicLinkController::class, 'verify'])->name('magic.verify');
+});
 
 require __DIR__.'/auth.php';
